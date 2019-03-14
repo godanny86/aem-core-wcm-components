@@ -48,6 +48,15 @@
                                         jcr:primaryType="nt:unstructured"
                                         sling:resourceType="granite/ui/components/coral/foundation/container">
                                         <items jcr:primaryType="nt:unstructured">
+                                            <accordion
+                                                jcr:primaryType="nt:unstructured"
+                                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                                checked="${not empty cqDesign.isDecorative ? cqDesign.isDecorative : false}"
+                                                fieldDescription="Check to have an accordion layout"
+                                                name="./isAccordion"
+                                                text="Accordion"
+                                                uncheckedValue="false"
+                                                value="{Boolean}true"/>
                                             <tabitems
                                                 jcr:primaryType="nt:unstructured"
                                                 sling:resourceType="core/wcm/components/commons/editor/dialog/childreneditor/v1/childreneditor"/>

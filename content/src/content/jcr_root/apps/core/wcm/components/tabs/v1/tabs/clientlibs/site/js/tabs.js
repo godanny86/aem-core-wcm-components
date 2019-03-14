@@ -148,15 +148,25 @@
         function bindEvents() {
             var tabs = that._elements["tab"];
             if (tabs) {
-                for (var i = 0; i < tabs.length; i++) {
-                    (function(index) {
-                        tabs[i].addEventListener("click", function(event) {
-                            navigateAndFocusTab(index);
-                        });
-                        tabs[i].addEventListener("keydown", function(event) {
-                            onKeyDown(event);
-                        });
-                    })(i);
+                if (Array.isArray(tabs)) {
+                    for (var i = 0; i < tabs.length; i++) {
+                        (function(index) {
+                            tabs[i].addEventListener("click", function(event) {
+                                navigateAndFocusTab(index);
+                            });
+                            tabs[i].addEventListener("keydown", function(event) {
+                                onKeyDown(event);
+                            });
+                        })(i);
+                    }
+                } else {
+                    // only one tab
+                    tabs.addEventListener("click", function(event) {
+                        navigateAndFocusTab(0);
+                    });
+                    tabs.addEventListener("keydown", function(event) {
+                        onKeyDown(event);
+                    });
                 }
             }
         }
@@ -212,8 +222,18 @@
                 if (Array.isArray(tabpanels)) {
                     for (var i = 0; i < tabpanels.length; i++) {
                         if (i === parseInt(that._active)) {
-                            tabpanels[i].classList.add(selectors.active.tabpanel);
-                            tabpanels[i].removeAttribute("aria-hidden");
+                            if (tabpanels[i].classList.contains("cmp-accordion")) {
+                                if (tabpanels[i].classList.contains(selectors.active.tabpanel)) {
+                                    tabpanels[i].classList.remove(selectors.active.tabpanel);
+                                    tabpanels[i].setAttribute("aria-hidden", true);
+                                } else {
+                                    tabpanels[i].classList.add(selectors.active.tabpanel);
+                                    tabpanels[i].removeAttribute("aria-hidden");
+                                }
+                            } else {
+                                tabpanels[i].classList.add(selectors.active.tabpanel);
+                                tabpanels[i].removeAttribute("aria-hidden");
+                            }
                             tabs[i].classList.add(selectors.active.tab);
                             tabs[i].setAttribute("aria-selected", true);
                             tabs[i].setAttribute("tabindex", "0");
@@ -227,8 +247,20 @@
                     }
                 } else {
                     // only one tab
-                    tabpanels.classList.add(selectors.active.tabpanel);
+                    if (tabpanels.classList.contains("cmp-accordion")) {
+                        if (tabpanels.classList.contains(selectors.active.tabpanel)) {
+                            tabpanels.classList.remove(selectors.active.tabpanel);
+                            tabpanels.setAttribute("aria-hidden", true);
+                        } else {
+                            tabpanels.classList.add(selectors.active.tabpanel);
+                            tabpanels.removeAttribute("aria-hidden");
+                        }
+                    } else {
+                        tabpanels.classList.add(selectors.active.tabpanel);
+                        tabpanels.removeAttribute("aria-hidden");
+                    }
                     tabs.classList.add(selectors.active.tab);
+                    tabs.setAttribute("aria-selected", true);
                 }
             }
         }
@@ -264,7 +296,11 @@
          */
         function navigateAndFocusTab(index) {
             navigate(index);
-            focusWithoutScroll(that._elements["tab"][index]);
+            if (Array.isArray(that._elements["tab"])) {
+                focusWithoutScroll(that._elements["tab"][index]);
+            } else {
+                focusWithoutScroll(that._elements["tab"]);
+            }
         }
     }
 

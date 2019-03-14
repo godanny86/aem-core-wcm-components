@@ -17,20 +17,38 @@
      data-sly-use.templates="core/wcm/components/commons/v1/templates.html"
      class="cmp-tabs"
      data-cmp-is="tabs">
-    <ol data-sly-test="${tabs.items && tabs.items.size > 0}"
-        role="tablist"
-        class="cmp-tabs__tablist"
-        aria-multiselectable="false">
-        <li data-sly-repeat.item="${tabs.items}"
-            role="tab"
-            class="cmp-tabs__tab${item.name == tabs.activeItem ? ' cmp-tabs__tab--active' : ''}"
-            data-cmp-hook-tabs="tab">${item.title}</li>
-    </ol>
-    <div data-sly-repeat.item="${tabs.items}"
-         data-sly-resource="${item.name @ decorationTagName='div'}"
-         role="tabpanel"
-         class="cmp-tabs__tabpanel${item.name == tabs.activeItem ? ' cmp-tabs__tabpanel--active' : ''}"
-         data-cmp-hook-tabs="tabpanel"></div>
+    <div data-sly-test="${!properties.isAccordion}">
+        <ol data-sly-test="${tabs.items && tabs.items.size > 0}"
+            role="tablist"
+            class="cmp-tabs__tablist"
+            aria-multiselectable="false">
+            <li data-sly-repeat.item="${tabs.items}"
+                role="tab"
+                class="cmp-tabs__tab${item.name == tabs.activeItem ? ' cmp-tabs__tab--active' : ''}"
+                data-cmp-hook-tabs="tab">${item.title}</li>
+        </ol>
+        <div data-sly-repeat.item="${tabs.items}"
+             data-sly-resource="${item.name @ decorationTagName='div'}"
+             role="tabpanel"
+             class="cmp-tabs__tabpanel${item.name == tabs.activeItem ? ' cmp-tabs__tabpanel--active' : ''}"
+             data-cmp-hook-tabs="tabpanel"></div>
+    </div>
+    <div data-sly-test="${properties.isAccordion}" class="cmp-accordion">
+        <ol data-sly-test="${tabs.items && tabs.items.size > 0}"
+            role="tablist"
+            class="cmp-tabs__tablist"
+            aria-multiselectable="false">
+            <li data-sly-repeat.item="${tabs.items}">
+                <div role="tab"
+                     class="cmp-tabs__tab${item.name == tabs.activeItem ? ' cmp-tabs__tab--active' : ''} cmp-accordion"
+                     data-cmp-hook-tabs="tab">${item.title}</div>
+                <div data-sly-resource="${item.name @ decorationTagName='div'}"
+                     role="tabpanel"
+                     class="cmp-tabs__tabpanel${item.name == tabs.activeItem ? ' cmp-tabs__tabpanel--active' : ''} cmp-accordion"
+                     data-cmp-hook-tabs="tabpanel"></div>
+            </li>
+        </ol>
+    </div>
     <sly data-sly-resource="${resource.path @ resourceType='wcm/foundation/components/parsys/newpar', appendPath='/*', decorationTagName='div', cssClassName='new section aem-Grid-newComponent'}"
          data-sly-test="${(wcmmode.edit || wcmmode.preview) && tabs.items.size < 1}"></sly>
 </div>
