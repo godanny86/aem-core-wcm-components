@@ -59,7 +59,6 @@
                                         fieldDescription="Maximum number of items displayed in list. Empty for all items."
                                         fieldLabel="Max Items"
                                         min="{Long}0"
-                                        value="{Long}10"
                                         name="./maxItems"/>
                                 </items>
                             </column>
